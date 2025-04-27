@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge - Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1c2526 0%, #2c3e50 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .signup-container {
+            background: #05445E;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo span {
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .logo svg {
+            fill: #189AB4;
+            width: 34px;
+            height: 34px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo svg:hover {
+            transform: rotate(360deg);
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 1em;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease-in-out 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+            animation: slideIn 0.5s ease-in-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.9s; }
+        .form-group:nth-child(2) { animation-delay: 1.1s; }
+        .form-group:nth-child(3) { animation-delay: 1.3s; }
+        .form-group:nth-child(4) { animation-delay: 1.5s; }
+        .form-group:nth-child(5) { animation-delay: 1.7s; }
+        .form-group:nth-child(6) { animation-delay: 1.9s; }
+
+        .form-group label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            background: #ffffff;
+            color: #333;
+            border: 1px solid #189AB4;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #189AB4;
+            box-shadow: 0 0 8px rgba(24, 154, 180, 0.5);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 12px;
+            top: 48px;
+            color: #189AB4;
+            font-size: 1.1em;
+        }
+
+        .form-group input[type="file"] {
+            padding: 12px 12px 12px 40px;
+            background: #ffffff;
+            border: 1px solid #189AB4;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out 2.1s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .terms-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .terms-group label {
+            font-size: 1em;
+            font-weight: 400;
+            color: #bdc3c7;
+            text-align: left;
+        }
+
+        .terms-group a {
+            color: #189AB4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .terms-group a:hover {
+            color: #055C9D;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 12px;
+            background: #189AB4;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+            animation: fadeIn 1s ease-in-out 2.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .btn:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .login-link {
+            margin-top: 15px;
+            font-size: 0.95em;
+            animation: fadeIn 1s ease-in-out 2.5s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .login-link a {
+            color: #189AB4;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #055C9D;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .signup-container {
+                padding: 30px;
+                max-width: 90%;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .form-group label {
+                font-size: 1em;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px 10px 10px 35px;
+                font-size: 0.95em;
+            }
+
+            .form-group i {
+                top: 46px;
+                font-size: 1em;
+            }
+
+            .terms-group label {
+                font-size: 0.95em;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+
+            .login-link {
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 20px;
+            }
+
+            .logo span {
+                font-size: 1.4em;
+            }
+
+            .logo svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .form-group label {
+                font-size: 0.95em;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px 8px 8px 30px;
+                font-size: 0.9em;
+            }
+
+            .form-group i {
+                top: 44px;
+                font-size: 0.9em;
+                left: 10px;
+            }
+
+            .terms-group label {
+                font-size: 0.9em;
+            }
+
+            .btn {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+
+            .login-link {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="signup-container">
+    <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-unity" viewBox="0 0 16 16">
+            <path d="M15 11.2V3.733L8.61 0v2.867l2.503 1.466c.099.067.099.2 0 .234L8.148 6.3c-.099.067-.197.033-.263 0L4.92 4.567c-.099-.034-.099-.2 0-.234l2.504-1.466V0L1 3.733V11.2v-.033.033l2.438-1.433V6.833c0-.1.131-.166.197-.133L6.6 8.433c.099.067.132.134.132.234v3.466c0 .1-.132.167-.198.134L4.031 10.8l-2.438 1.433L7.983 16l6.391-3.733-2.438-1.434L9.434 12.3c-.099.067-.198 0-.198-.133V8.7c0-.1.066-.2.132-.233l2.965-1.734c.099-.066.197 0 .197 .134V9.8z"/>
+        </svg>
+        <span>PATHFORGE</span>
+    </div>
+    <h2>Sign Up</h2>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    <form th:action="@{/signup}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+            <label for="profilePicture">Profile Picture</label>
+            <i class="fas fa-image"></i>
+            <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="role">Role</label>
+            <i class="fas fa-briefcase"></i>
+            <select id="role" name="role" required>
+                <option value="ADMIN">Admin</option>
+                <option value="HR">HR</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <div class="terms-group">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">I agree to the <a href="/terms" target="_blank">Terms and Conditions</a></label>
+        </div>
+        <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Sign Up</button>
+    </form>
+    <div class="login-link">
+        Already have an account? <a href="/login"><i class="fas fa-sign-in-alt"></i> Log in</a>
+    </div>
+</div>
+</body>
+</html>

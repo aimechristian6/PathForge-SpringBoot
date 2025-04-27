@@ -1,0 +1,304 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1c2526; /* Matching Admin/HR Dashboard background */
+    font-family: 'Roboto', Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff; /* Default text color to white */
+}
+
+/* Remove the overlay since we're using a solid background */
+body::before {
+    display: none;
+}
+
+/* Report Header (Matching Admin/HR Dashboard) */
+.report-header {
+    background: #05445E; /* Navy Blue */
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    fill: #189AB4; /* Blue Grotto */
+}
+
+.logo-text {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #ffffff; /* White */
+    text-transform: uppercase;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #189AB4; /* Blue Grotto */
+    object-fit: cover;
+}
+
+.user-details {
+    text-align: left;
+    color: #ffffff; /* White */
+}
+
+.user-name {
+    font-size: 1em;
+    font-weight: 600;
+    display: block;
+}
+
+.user-email {
+    font-size: 0.85em;
+    color: #bdc3c7;
+    display: block;
+}
+
+.user-role {
+    font-size: 0.8em;
+    color: #055C9D; /* Blue */
+    display: block;
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: #189AB4; /* Blue Grotto */
+    color: #ffffff; /* White */
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #055C9D; /* Blue */
+}
+
+/* Page Content */
+.content {
+    flex: 1;
+    padding: 40px 20px;
+    z-index: 2;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    color: #ffffff; /* White */
+}
+
+/* Welcome Section (Matching Admin/HR Dashboard) */
+.welcome-section {
+    margin-bottom: 20px;
+}
+
+.content-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #ffffff; /* White */
+    margin-bottom: 10px;
+}
+
+.content-subtitle {
+    font-size: 1.2em;
+    color: #ffffff; /* White */
+}
+
+.date-section {
+    margin-bottom: 40px;
+}
+
+.current-date {
+    font-size: 1em;
+    color: #ffffff; /* White */
+}
+
+/* Report Section */
+.report-section {
+    background: #05445E; /* Navy Blue */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #ffffff; /* White */
+    margin-bottom: 20px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-table th,
+.report-table td {
+    padding: 10px;
+    text-align: left;
+    color: #ffffff; /* White */
+}
+
+.report-table th {
+    background: #05445E; /* Navy Blue, matching the section background */
+    font-weight: 600;
+}
+
+.report-table td {
+    background: #05445E; /* Navy Blue, matching the section background */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.report-table tr:last-child td {
+    border-bottom: none;
+}
+
+.table-profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #189AB4; /* Blue Grotto */
+}
+
+.no-data {
+    text-align: center;
+    color: #bdc3c7;
+    padding: 20px;
+}
+
+/* Footer (Matching Admin/HR Dashboard) */
+.report-footer {
+    background: #05445E; /* Navy Blue */
+    color: #ffffff; /* White */
+    text-align: center;
+    padding: 15px;
+    z-index: 2;
+    position: relative;
+    margin-top: auto;
+}
+
+.report-footer p {
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .user-profile {
+        justify-content: center;
+    }
+
+    .content-title {
+        font-size: 2em;
+    }
+
+    .section-title {
+        font-size: 1.3em;
+    }
+
+    .date-section {
+        text-align: center;
+    }
+
+    .report-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .report-header {
+        padding: 10px 15px;
+    }
+
+    .logo-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .logo-text {
+        font-size: 1.2em;
+    }
+
+    .profile-image {
+        width: 35px;
+        height: 35px;
+    }
+
+    .user-details {
+        font-size: 0.9em;
+    }
+
+    .content {
+        padding: 20px 10px;
+    }
+
+    .content-title {
+        font-size: 1.8em;
+    }
+
+    .content-subtitle {
+        font-size: 1em;
+    }
+
+    .current-date {
+        font-size: 0.9em;
+    }
+
+    .table-profile-image {
+        width: 30px;
+        height: 30px;
+    }
+}

@@ -1,0 +1,310 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1c2526; /* Matching Login/Admin/HR Dashboard background */
+    font-family: 'Roboto', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow-y: auto;
+    color: #ffffff; /* Default text color to white */
+}
+
+/* Remove the overlay since we're using a solid background */
+body::before {
+    display: none;
+}
+
+/* Sign Up Container */
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+/* Sign Up Card */
+.signup-card {
+    background: #05445E; /* Navy Blue to match Login/Admin/HR Dashboards */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* PathForge Logo */
+.logo-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    fill: #189AB4; /* Blue Grotto */
+}
+
+.logo-text {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #ffffff; /* White */
+    text-transform: uppercase;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sign Up Title */
+.signup-title {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: #ffffff; /* White to match Login/Admin/HR Dashboards */
+    margin-bottom: 30px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* Sign Up Form */
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form Group */
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.95em;
+    font-weight: 500;
+    color: #ffffff; /* White to match Login/Admin/HR Dashboards */
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-group label i {
+    margin-right: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    border-color: #189AB4; /* Blue Grotto */
+    box-shadow: 0 0 8px rgba(24, 154, 180, 0.3);
+}
+
+.input-wrapper input::placeholder {
+    color: #bdc3c7;
+}
+
+.input-wrapper select {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2334495e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 16px center;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+/* File Input */
+.input-wrapper input[type="file"] {
+    padding: 12px 16px;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid #ecf0f1;
+    border-radius: 8px;
+}
+
+.input-wrapper input[type="file"]::-webkit-file-upload-button {
+    background: #189AB4; /* Blue Grotto */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.input-wrapper input[type="file"]::-webkit-file-upload-button:hover {
+    background: #055C9D; /* Blue */
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    text-align: left;
+    margin-top: 5px;
+}
+
+.checkbox-group label {
+    font-size: 0.95em;
+    color: #ffffff; /* White to match Login/Admin/HR Dashboards */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #189AB4; /* Blue Grotto */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    transform: scale(1.15);
+}
+
+/* Sign Up Button */
+.signup-btn {
+    background: #189AB4; /* Blue Grotto */
+    color: #ffffff;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.signup-btn:hover {
+    background: #055C9D; /* Blue */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(24, 154, 180, 0.4);
+}
+
+.signup-btn:active {
+    transform: translateY(0);
+}
+
+/* Login Link */
+.login-link {
+    margin-top: 25px;
+    font-size: 0.95em;
+    color: #bdc3c7; /* Light gray to match Login/Admin/HR Dashboards */
+}
+
+.login-link a {
+    color: #189AB4; /* Blue Grotto */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #055C9D; /* Blue */
+    text-decoration: underline;
+}
+
+/* Message Styling */
+.message {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 0.95em;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .signup-container {
+        padding: 15px;
+    }
+
+    .signup-card {
+        padding: 30px;
+        max-width: 100%;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .logo-text {
+        font-size: 1.5em;
+    }
+
+    .signup-title {
+        font-size: 1.8em;
+    }
+
+    .form-group label {
+        font-size: 0.85em;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .checkbox-group label {
+        font-size: 0.85em;
+    }
+
+    .signup-btn {
+        padding: 14px;
+        font-size: 1em;
+    }
+
+    .login-link {
+        font-size: 0.9em;
+    }
+}

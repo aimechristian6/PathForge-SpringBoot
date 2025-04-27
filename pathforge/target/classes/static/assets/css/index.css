@@ -1,0 +1,294 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    overflow-x: hidden;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column; /* Allow footer to stick to the bottom */
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: url('../images/DEC1.jpg') no-repeat center center/cover;
+    background-color: #1a1a1a; /* Dark fallback color */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 20px 60px; /* Consistent padding */
+    position: relative;
+    z-index: 2;
+}
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between SVG and text */
+}
+
+.logo-wrapper svg {
+    fill: #3498db; /* Vibrant blue for the logo */
+    transition: transform 0.3s ease;
+}
+
+.logo-wrapper svg:hover {
+    transform: scale(1.1); /* Subtle hover effect */
+}
+
+.logo-text {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #3498db; /* Match the SVG color */
+}
+
+/* Navigation Links Container */
+.nav-container {
+    flex-grow: 1; /* Takes up remaining space */
+    display: flex;
+    justify-content: flex-end; /* Aligns links to the right */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px; /* Consistent spacing between links */
+    width: 50%; /* Links span from middle to right */
+    justify-content: space-between; /* Evenly distribute links */
+}
+
+.nav-links li {
+    opacity: 0; /* Start invisible for animation */
+    animation: slideIn 0.5s ease forwards;
+    animation-delay: calc(0.1s * var(--i)); /* Staggered delay for each link */
+}
+
+.nav-links li:nth-child(1) { --i: 1; }
+.nav-links li:nth-child(2) { --i: 2; }
+.nav-links li:nth-child(3) { --i: 3; }
+.nav-links li:nth-child(4) { --i: 4; }
+.nav-links li:nth-child(5) { --i: 5; }
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #3498db;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #3498db;
+}
+
+.nav-link:hover::after {
+    width: 100%; /* Underline animation on hover */
+}
+
+/* Animation for Navbar Links */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero Content */
+.hero-content {
+    text-align: center;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.hero-content h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.explore-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #3498db;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 0.7s ease forwards;
+    animation-delay: 1s;
+}
+
+.explore-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.5);
+}
+
+/* Animation for Hero Content */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Overlay for Readability */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.9));
+    z-index: 0;
+}
+
+/* Footer */
+.footer {
+    background: #1a1a1a; /* Dark background to match the hero section */
+    color: #ffffff; /* White text */
+    text-align: center;
+    padding: 15px;
+    z-index: 2;
+    position: relative;
+    margin-top: auto; /* Stick to the bottom */
+}
+
+.footer p {
+    font-size: 0.9em;
+    font-weight: 400;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 30px;
+    }
+
+    .logo-text {
+        font-size: 1.2em;
+    }
+
+    .nav-links {
+        gap: 20px;
+        width: 60%;
+    }
+
+    .nav-link {
+        font-size: 1em;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8em;
+    }
+
+    .explore-btn {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    .footer p {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .nav-container {
+        width: 100%;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    .hero-content {
+        padding: 10px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.5em;
+    }
+
+    .explore-btn {
+        padding: 8px 15px;
+    }
+
+    .footer p {
+        font-size: 0.8em;
+    }
+}

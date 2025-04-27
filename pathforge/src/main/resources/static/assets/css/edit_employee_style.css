@@ -1,0 +1,209 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #1c2526; /* Matching HR/Admin Dashboard background */
+    font-family: 'Roboto', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff; /* Default text color to white */
+}
+
+/* Form Container */
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Form Card */
+.form-card {
+    background: #05445E; /* Navy Blue to match HR Dashboard */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Form Title */
+.form-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #ffffff; /* White to match HR Dashboard */
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Error Message */
+.message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+/* Edit Employee Form */
+.edit-employee-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #ffffff; /* White to match HR Dashboard */
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-group label i {
+    margin-right: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.input-wrapper input[readonly] {
+    background: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    border-color: #189AB4; /* Blue Grotto */
+    box-shadow: 0 0 8px rgba(24, 154, 180, 0.3);
+}
+
+.input-wrapper select {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="%2334495e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 15px center;
+    background-size: 12px;
+    padding-right: 40px;
+}
+
+.submit-btn {
+    background: #189AB4; /* Blue Grotto */
+    color: #ffffff;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.submit-btn:hover {
+    background: #055C9D; /* Blue */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(24, 154, 180, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Back Link */
+.back-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link a {
+    color: #189AB4; /* Blue Grotto */
+    text-decoration: none;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    color: #055C9D; /* Blue */
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-card {
+        padding: 30px;
+    }
+
+    .form-title {
+        font-size: 1.8em;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .form-title {
+        font-size: 1.5em;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .submit-btn {
+        padding: 12px;
+        font-size: 1em;
+    }
+
+    .back-link a {
+        font-size: 0.9em;
+    }
+}

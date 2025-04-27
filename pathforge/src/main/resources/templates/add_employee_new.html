@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge - Add Employee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1c2526 0%, #2c3e50 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+
+        body::before {
+            display: none;
+        }
+
+        .header {
+            background: #05445E;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .logo svg {
+            margin-right: 10px;
+            fill: #189AB4;
+            width: 34px;
+            height: 34px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo svg:hover {
+            transform: rotate(360deg);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #189AB4;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+            text-align: left; /* Adjusted to match Edit Employee */
+        }
+
+        .user-name {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 0.95em;
+            color: #bdc3c7;
+        }
+
+        .user-role {
+            font-size: 0.9em;
+            color: #055C9D;
+        }
+
+        .logout-form {
+            display: inline;
+        }
+
+        .btn.btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #189AB4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.btn-logout:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            text-align: left; /* Adjusted to match Edit Employee */
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 3.5em; /* Increased to match Edit Employee */
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .welcome-section p {
+            font-size: 1.4em; /* Increased to match Edit Employee */
+            color: #bdc3c7;
+            font-weight: 400;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .date-report {
+            display: flex;
+            justify-content: flex-start; /* Adjusted to match Edit Employee */
+            align-items: center;
+            background: transparent;
+        }
+
+        .date-report span {
+            font-size: 1.4em; /* Increased to match Edit Employee */
+            color: #ffffff;
+            font-weight: 500;
+            animation: fadeIn 1s ease-in-out 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        h2 {
+            font-size: 2em; /* Increased to match Edit Employee */
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: left; /* Adjusted to match Edit Employee */
+            animation: fadeIn 1s ease-in-out 1s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .add-form {
+            background: #05445E;
+            padding: 50px; /* Increased to match Edit Employee */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 800px; /* Increased to match Edit Employee */
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-in-out 1.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 30px; /* Increased to match Edit Employee */
+            animation: slideIn 0.5s ease-in-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 1.4s; }
+        .form-group:nth-child(2) { animation-delay: 1.6s; }
+        .form-group:nth-child(3) { animation-delay: 1.8s; }
+        .form-group:nth-child(4) { animation-delay: 2.0s; }
+        .form-group:nth-child(5) { animation-delay: 2.2s; }
+        .form-group:nth-child(6) { animation-delay: 2.4s; }
+
+        .form-group label {
+            display: block;
+            font-size: 1.1em; /* Adjusted to match Edit Employee */
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 10px; /* Adjusted to match Edit Employee */
+            text-align: left;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            background: #ffffff;
+            color: #333;
+            border: 1px solid #189AB4;
+            border-radius: 8px;
+            font-size: 1em; /* Adjusted to match Edit Employee */
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #189AB4;
+            box-shadow: 0 0 8px rgba(24, 154, 180, 0.5);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 12px;
+            top: 48px; /* Adjusted to match Edit Employee */
+            color: #189AB4;
+            font-size: 1.1em; /* Adjusted to match Edit Employee */
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Adjusted to match Edit Employee */
+            margin-top: 30px;
+            animation: fadeIn 1s ease-in-out 2.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px; /* Adjusted to match Edit Employee */
+            padding: 12px 20px; /* Adjusted to match Edit Employee */
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em; /* Adjusted to match Edit Employee */
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3); /* Added to match Edit Employee */
+        }
+
+        .btn-save {
+            background: #189AB4;
+        }
+
+        .btn-save:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .btn-cancel {
+            background: #e74c3c;
+        }
+
+        .btn-cancel:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);
+        }
+
+        .btn i {
+            font-size: 1.1em; /* Adjusted to match Edit Employee */
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.95em;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            background: #05445E;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer p {
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 15px 20px;
+            }
+
+            .user-info {
+                justify-content: center;
+            }
+
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start; /* Adjusted to match Edit Employee */
+                gap: 15px;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.8em;
+            }
+
+            .welcome-section p {
+                font-size: 1.2em;
+            }
+
+            .date-report span {
+                font-size: 1.2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+
+            .add-form {
+                padding: 40px; /* Adjusted to match Edit Employee */
+                max-width: 100%; /* Ensure form fits the container */
+            }
+
+            .form-group label {
+                font-size: 1em;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 10px 10px 10px 35px;
+                font-size: 0.95em;
+            }
+
+            .form-group i {
+                top: 46px;
+                font-size: 1em;
+            }
+
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.95em;
+            }
+
+            .btn i {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .logo a {
+                font-size: 1.4em;
+            }
+
+            .profile-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .user-details {
+                font-size: 0.95em;
+            }
+
+            .main-content {
+                padding: 40px 15px;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.2em;
+            }
+
+            .welcome-section p {
+                font-size: 1.1em;
+            }
+
+            .date-report span {
+                font-size: 1.2em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .add-form {
+                padding: 30px;
+            }
+
+            .form-group label {
+                font-size: 0.95em;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 8px 8px 8px 30px;
+                font-size: 0.9em;
+            }
+
+            .form-group i {
+                top: 44px;
+                font-size: 0.9em;
+                left: 10px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+
+            .btn i {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <a th:href="@{/}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-unity" viewBox="0 0 16 16">
+                <path d="M15 11.2V3.733L8.61 0v2.867l2.503 1.466c.099.067.099.2 0 .234L8.148 6.3c-.099.067-.197.033-.263 0L4.92 4.567c-.099-.034-.099-.2 0-.234l2.504-1.466V0L1 3.733V11.2v-.033.033l2.438-1.433V6.833c0-.1.131-.166.197-.133L6.6 8.433c.099.067.132.134.132.234v3.466c0 .1-.132.167-.198.134L4.031 10.8l-2.438 1.433L7.983 16l6.391-3.733-2.438-1.434L9.434 12.3c-.099.067-.198 0-.198-.133V8.7c0-.1.066-.2.132-.233l2.965-1.734c.099-.066.197 0 .197 .134V9.8z"/>
+            </svg>
+            <span>PATHFORGE</span>
+        </a>
+    </div>
+    <div class="user-info">
+        <img th:src="${profilePictureBase64}" alt="Profile Picture" class="profile-image"/>
+        <div class="user-details">
+            <span class="user-name" th:text="${username}"></span>
+            <span class="user-email" th:text="${email}"></span>
+            <span class="user-role" th:text="${role}"></span>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="welcome-section">
+        <div>
+            <h1>Welcome, <span th:text="${username}"></span>!</h1>
+            <p>Add a new employee below.</p>
+            <div class="date-report">
+                <span th:text="${#dates.format(#dates.createNow(), 'EEE, MMM dd HH:mm:ss zzz yyyy')}"></span>
+            </div>
+        </div>
+    </div>
+
+    <h2>Add New Employee</h2>
+    <form th:action="@{/hr/employees/addEmployee}" method="post" class="add-form">
+        <div class="form-group">
+            <label for="empId">Employee ID</label>
+            <i class="fas fa-id-badge"></i>
+            <input type="text" id="empId" name="empId" th:value="${employee.empId}" required/>
+        </div>
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <i class="fas fa-user"></i>
+            <input type="text" id="firstName" name="firstName" th:value="${employee.firstName}" required/>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <i class="fas fa-user"></i>
+            <input type="text" id="lastName" name="lastName" th:value="${employee.lastName}" required/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" th:value="${employee.email}" required/>
+        </div>
+        <div class="form-group">
+            <label for="qualification">Qualification</label>
+            <i class="fas fa-graduation-cap"></i>
+            <select id="qualification" name="qualification" required>
+                <option value="DIPLOMA" th:selected="${employee.qualification == 'DIPLOMA'}">Diploma</option>
+                <option value="BACHELOR" th:selected="${employee.qualification == 'BACHELOR'}">Bachelor</option>
+                <option value="MASTERS" th:selected="${employee.qualification == 'MASTERS'}">Masters</option>
+                <option value="PHD" th:selected="${employee.qualification == 'PHD'}">PhD</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="position">Position</label>
+            <i class="fas fa-briefcase"></i>
+            <input type="text" id="position" name="position" th:value="${employee.position}" required/>
+        </div>
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save</button>
+            <a th:href="@{/hr}" class="btn btn-cancel"><i class="fas fa-times"></i> Cancel</a>
+        </div>
+    </form>
+</div>
+
+<footer class="footer">
+    <p>© 2025 PathForge. All rights reserved.</p>
+</footer>
+</body>
+</html>

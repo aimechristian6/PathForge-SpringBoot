@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge - View Reports</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1c2526 0%, #2c3e50 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+
+        body::before {
+            display: none;
+        }
+
+        .header {
+            background: #05445E;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .logo svg {
+            margin-right: 10px;
+            fill: #189AB4;
+            width: 34px;
+            height: 34px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo svg:hover {
+            transform: rotate(360deg);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #189AB4;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .user-name {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 0.95em;
+            color: #bdc3c7;
+        }
+
+        .user-role {
+            font-size: 0.9em;
+            color: #055C9D;
+        }
+
+        .logout-form {
+            display: inline;
+        }
+
+        .btn.btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #189AB4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.btn-logout:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .welcome-section p {
+            font-size: 1.2em;
+            color: #bdc3c7;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .date-report {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background: transparent;
+        }
+
+        .date-report span {
+            font-size: 1.2em;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .employee-table-container {
+            background: #05445E;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .employee-table th,
+        .employee-table td {
+            padding: 18px 20px;
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .employee-table th {
+            background: #189AB4;
+            font-weight: 600;
+            font-size: 1.1em;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .employee-table th i {
+            margin-right: 8px;
+            font-size: 1em;
+            color: #ffffff;
+        }
+
+        .employee-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .employee-table tr:nth-child(even) {
+            background: rgba(24, 154, 180, 0.05);
+        }
+
+        .employee-table tr:hover td {
+            background: rgba(24, 154, 180, 0.2);
+            transform: scale(1.01);
+        }
+
+        .employee-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #bdc3c7;
+        }
+
+        .btn.btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #189AB4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+        }
+
+        .btn.btn-back:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .btn i {
+            font-size: 1em;
+        }
+
+        .footer {
+            background: #05445E;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer p {
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 15px 20px;
+            }
+
+            .user-info {
+                justify-content: center;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.2em;
+            }
+
+            .employee-table th,
+            .employee-table td {
+                padding: 12px;
+            }
+
+            .btn.btn-back {
+                font-size: 0.9em;
+                padding: 10px 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .logo a {
+                font-size: 1.4em;
+            }
+
+            .profile-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .user-details {
+                font-size: 0.95em;
+            }
+
+            .main-content {
+                padding: 40px 15px;
+            }
+
+            .welcome-section h1 {
+                font-size: 1.9em;
+            }
+
+            .welcome-section p {
+                font-size: 1.1em;
+            }
+
+            .date-report span {
+                font-size: 1em;
+            }
+
+            .employee-table th,
+            .employee-table td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .btn.btn-back {
+                font-size: 0.9em;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <a th:href="@{/}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-unity" viewBox="0 0 16 16">
+                <path d="M15 11.2V3.733L8.61 0v2.867l2.503 1.466c.099.067.099.2 0 .234L8.148 6.3c-.099.067-.197.033-.263 0L4.92 4.567c-.099-.034-.099-.2 0-.234l2.504-1.466V0L1 3.733V11.2v-.033.033l2.438-1.433V6.833c0-.1.131-.166.197-.133L6.6 8.433c.099.067.132.134.132.234v3.466c0 .1-.132.167-.198.134L4.031 10.8l-2.438 1.433L7.983 16l6.391-3.733-2.438-1.434L9.434 12.3c-.099.067-.198 0-.198-.133V8.7c0-.1.066-.2.132-.233l2.965-1.734c.099-.066.197 0 .197.134V9.8z"/>
+            </svg>
+            <span>PATHFORGE</span>
+        </a>
+    </div>
+    <div class="user-info">
+        <img th:src="${profilePictureBase64}" alt="Profile Picture" class="profile-image"/>
+        <div class="user-details">
+            <span class="user-name" th:text="${username}"></span>
+            <span class="user-email" th:text="${email}"></span>
+            <span class="user-role" th:text="${role}"></span>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="welcome-section">
+        <h1>Welcome, <span th:text="${username}"></span>!</h1>
+        <p>View employee reports below.</p>
+        <div class="date-report">
+            <span th:text="${#dates.format(#dates.createNow(), 'EEE, MMM dd HH:mm:ss zzz yyyy')}"></span>
+        </div>
+    </div>
+
+    <h2>Employee Reports</h2>
+    <div class="employee-table-container">
+        <table class="employee-table">
+            <thead>
+            <tr>
+                <th><i class="fas fa-id-badge"></i> Emp ID</th>
+                <th><i class="fas fa-user"></i> First Name</th>
+                <th><i class="fas fa-user"></i> Last Name</th>
+                <th><i class="fas fa-envelope"></i> Email</th>
+                <th><i class="fas fa-graduation-cap"></i> Qualification</th>
+                <th><i class="fas fa-briefcase"></i> Position</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.empId}"></td>
+                <td th:text="${employee.firstName}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.qualification?.displayName}"></td>
+                <td th:text="${employee.position}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(employees)}">
+                <td colspan="6" class="no-data">No employees found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a th:href="@{/hr}" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+</div>
+
+<footer class="footer">
+    <p>© 2025 PathForge. All rights reserved.</p>
+</footer>
+</body>
+</html>

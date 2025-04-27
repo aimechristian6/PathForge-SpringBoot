@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1c2526 0%, #2c3e50 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+
+        body::before {
+            display: none;
+        }
+
+        .header {
+            background: #05445E;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.8em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .logo svg {
+            margin-right: 10px;
+            fill: #189AB4;
+            width: 34px;
+            height: 34px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo svg:hover {
+            transform: rotate(360deg);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #189AB4;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .user-name {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 0.95em;
+            color: #bdc3c7;
+        }
+
+        .user-role {
+            font-size: 0.9em;
+            color: #055C9D;
+        }
+
+        .logout-form {
+            display: inline;
+        }
+
+        .btn.btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #189AB4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.btn-logout:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            text-align: left;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 3.5em; /* Increased to match the image */
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .welcome-section p {
+            font-size: 1.4em; /* Increased to match the image */
+            color: #bdc3c7;
+            font-weight: 400;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .date-report {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background: transparent;
+        }
+
+        .date-report span {
+            font-size: 1.4em; /* Increased to match the image */
+            color: #ffffff;
+            font-weight: 500;
+            animation: fadeIn 1s ease-in-out 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .date-report select {
+            padding: 12px; /* Slightly increased padding */
+            background: #055C9D;
+            color: #05445E;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em; /* Increased to match the image */
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-in-out 0.9s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .date-report select:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(24, 154, 180, 0.5);
+        }
+
+        .btn.btn-report {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 20px; /* Increased padding */
+            background: #189AB4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em; /* Increased to match the image */
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(24, 154, 180, 0.3);
+            animation: fadeIn 1s ease-in-out 1.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .btn.btn-report:hover {
+            background: #055C9D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 154, 180, 0.5);
+        }
+
+        .dashboard-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .overview-section {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            min-width: 300px;
+        }
+
+        .overview-card {
+            background: #05445E;
+            padding: 30px; /* Increased padding to match the image */
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-in-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .overview-card:nth-child(1) { animation-delay: 0.2s; }
+        .overview-card:nth-child(2) { animation-delay: 0.4s; }
+        .overview-card:nth-child(3) { animation-delay: 0.6s; }
+        .overview-card:nth-child(4) { animation-delay: 0.8s; }
+
+        .overview-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(24, 154, 180, 0.3);
+        }
+
+        .overview-card i {
+            font-size: 2.5em; /* Increased icon size to match the image */
+            color: #189AB4;
+            margin-bottom: 12px; /* Slightly increased margin */
+        }
+
+        .overview-card h3 {
+            font-size: 1.4em; /* Increased to match the image */
+            color: #bdc3c7;
+            margin-bottom: 12px; /* Slightly increased margin */
+        }
+
+        .overview-card p {
+            font-size: 2.2em; /* Increased to match the image */
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .graph-section {
+            flex: 2;
+            min-width: 400px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-in-out 1s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .graph-section h2 {
+            font-size: 2em; /* Increased to match the image */
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .graph-container {
+            background: #05445E;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        canvas {
+            max-width: 100%;
+            height: 400px !important; /* Increased height to match the image */
+        }
+
+        .active-users-section {
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .active-users-section h2 {
+            font-size: 2em; /* Increased to match the image */
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out 1.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .users-table-container {
+            background: #05445E;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 20px 24px; /* Increased padding to match the image */
+            text-align: left;
+            color: #ffffff;
+        }
+
+        .users-table th {
+            background: #189AB4;
+            font-weight: 600;
+            font-size: 1.2em; /* Increased to match the image */
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .users-table th i {
+            margin-right: 8px;
+            font-size: 1.2em; /* Increased icon size */
+            color: #ffffff;
+        }
+
+        .users-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.1em; /* Increased to match the image */
+            transition: background 0.3s ease;
+        }
+
+        .users-table tr {
+            animation: slideIn 0.5s ease-in-out;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .users-table tr:nth-child(1) { animation-delay: 1.0s; }
+        .users-table tr:nth-child(2) { animation-delay: 1.2s; }
+        .users-table tr:nth-child(3) { animation-delay: 1.4s; }
+        .users-table tr:nth-child(4) { animation-delay: 1.6s; }
+
+        .users-table tr:hover td {
+            background: rgba(24, 154, 180, 0.2);
+        }
+
+        .users-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-users {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #bdc3c7;
+            font-size: 1.2em; /* Increased to match the image */
+        }
+
+        .footer {
+            background: #05445E;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer p {
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                flex-direction: column;
+            }
+
+            .overview-section {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .graph-section {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 15px 20px;
+            }
+
+            .user-info {
+                justify-content: center;
+            }
+
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.8em; /* Adjusted for smaller screens */
+            }
+
+            .welcome-section p {
+                font-size: 1.2em; /* Adjusted for smaller screens */
+            }
+
+            .report-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .date-report select,
+            .btn.btn-report {
+                width: 48%;
+            }
+
+            .overview-section {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-card {
+                padding: 25px; /* Slightly reduced padding */
+            }
+
+            .overview-card i {
+                font-size: 2.2em; /* Adjusted for smaller screens */
+            }
+
+            .overview-card h3 {
+                font-size: 1.2em; /* Adjusted for smaller screens */
+            }
+
+            .overview-card p {
+                font-size: 1.8em; /* Adjusted for smaller screens */
+            }
+
+            .active-users-section h2,
+            .graph-section h2 {
+                font-size: 1.6em; /* Adjusted for smaller screens */
+            }
+
+            .users-table th,
+            .users-table td {
+                padding: 15px 18px; /* Adjusted padding */
+                font-size: 1em; /* Adjusted for smaller screens */
+            }
+
+            .users-table th i {
+                font-size: 1em; /* Adjusted for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo svg {
+                width: 28px;
+                height: 28px;
+            }
+
+            .logo a {
+                font-size: 1.4em;
+            }
+
+            .profile-image {
+                width: 40px;
+                height: 40px;
+            }
+
+            .user-details {
+                font-size: 0.95em;
+            }
+
+            .main-content {
+                padding: 40px 15px;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.2em; /* Adjusted for smaller screens */
+            }
+
+            .welcome-section p {
+                font-size: 1.1em; /* Adjusted for smaller screens */
+            }
+
+            .date-report span {
+                font-size: 1.2em; /* Adjusted for smaller screens */
+            }
+
+            .date-report select,
+            .btn.btn-report {
+                font-size: 0.95em; /* Adjusted for smaller screens */
+                padding: 10px 16px; /* Adjusted padding */
+                width: 100%;
+            }
+
+            .overview-card {
+                padding: 20px; /* Adjusted padding */
+            }
+
+            .overview-card i {
+                font-size: 2em; /* Adjusted for smaller screens */
+            }
+
+            .overview-card h3 {
+                font-size: 1.1em; /* Adjusted for smaller screens */
+            }
+
+            .overview-card p {
+                font-size: 1.6em; /* Adjusted for smaller screens */
+            }
+
+            .active-users-section h2,
+            .graph-section h2 {
+                font-size: 1.4em; /* Adjusted for smaller screens */
+            }
+
+            .users-table th,
+            .users-table td {
+                padding: 12px 15px; /* Adjusted padding */
+                font-size: 0.95em; /* Adjusted for smaller screens */
+            }
+
+            .users-table th i {
+                font-size: 0.95em; /* Adjusted for smaller screens */
+            }
+
+            .no-users {
+                font-size: 1em; /* Adjusted for smaller screens */
+            }
+
+            canvas {
+                height: 300px !important; /* Adjusted for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <a th:href="@{/}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-unity" viewBox="0 0 16 16">
+                <path d="M15 11.2V3.733L8.61 0v2.867l2.503 1.466c.099.067.099.2 0 .234L8.148 6.3c-.099.067-.197.033-.263 0L4.92 4.567c-.099-.034-.099-.2 0-.234l2.504-1.466V0L1 3.733V11.2v-.033.033l2.438-1.433V6.833c0-.1.131-.166.197-.133L6.6 8.433c.099.067.132.134.132.234v3.466c0 .1-.132.167-.198.134L4.031 10.8l-2.438 1.433L7.983 16l6.391-3.733-2.438-1.434L9.434 12.3c-.099.067-.198 0-.198-.133V8.7c0-.1.066-.2.132-.233l2.965-1.734c.099-.066.197 0 .197 .134V9.8z"/>
+            </svg>
+            <span>PATHFORGE</span>
+        </a>
+    </div>
+    <div class="user-info">
+        <img th:src="${profilePictureBase64}" alt="Profile Picture" class="profile-image"/>
+        <div class="user-details">
+            <span class="user-name" th:text="${username}"></span>
+            <span class="user-email" th:text="${email}"></span>
+            <span class="user-role" th:text="${role}"></span>
+        </div>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </form>
+    </div>
+</header>
+
+<div class="main-content">
+    <div class="welcome-section">
+        <div>
+            <h1>Welcome, <span th:text="${username}"></span>!</h1>
+            <p>Monitor active users, view reports, and configure settings.</p>
+            <div class="date-report">
+                <span th:text="${#dates.format(#dates.createNow(), 'EEE, MMM dd HH:mm:ss zzz yyyy')}"></span>
+            </div>
+        </div>
+        <div class="report-actions">
+            <select>
+                <option>This month</option>
+                <option>Last month</option>
+                <option>This year</option>
+            </select>
+            <a th:href="@{/viewReports}" class="btn btn-report"><i class="fas fa-file-alt"></i> View Report</a>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <div class="overview-section">
+            <div class="overview-card">
+                <i class="fas fa-users"></i>
+                <h3>Active Users</h3>
+                <p th:text="${activeUsers != null ? activeUsers.size() : '0'}"></p>
+            </div>
+            <div class="overview-card">
+                <i class="fas fa-user-shield"></i>
+                <h3>Active Admins</h3>
+                <p th:text="${activeAdminsCount != null ? activeAdminsCount : '0'}"></p>
+            </div>
+            <div class="overview-card">
+                <i class="fas fa-clock"></i>
+                <h3>System Uptime</h3>
+                <p>8d 2h</p>
+            </div>
+            <div class="overview-card">
+                <i class="fas fa-check-circle"></i>
+                <h3>System Health</h3>
+                <p>98%</p>
+            </div>
+        </div>
+
+        <div class="graph-section">
+            <h2>Business Users Over Time</h2>
+            <div class="graph-container">
+                <canvas id="activeUsersChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="active-users-section">
+        <h2>Active Users</h2>
+        <div class="users-table-container">
+            <table class="users-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-user"></i> User Name</th>
+                    <th><i class="fas fa-envelope"></i> Email</th>
+                    <th><i class="fas fa-briefcase"></i> Role</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${activeUsers}">
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.role}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(activeUsers)}">
+                    <td colspan="3" class="no-users">No active users found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>© 2025 PathForge. All rights reserved.</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('activeUsersChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Active Users',
+                    data: [50, 60, 70, 76, 80, 85],
+                    backgroundColor: '#189AB4',
+                    borderColor: '#055C9D',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#ffffff',
+                            stepSize: 10
+                        },
+                        max: 90
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
